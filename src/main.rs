@@ -1,5 +1,5 @@
 pub mod twenty_nineteen;
 
 fn main() {
-    twenty_nineteen::two::cacluate();
+    twenty_nineteen::day3::cacluate();
 }
