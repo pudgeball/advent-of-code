@@ -19,7 +19,7 @@ fn turn_vec_to_string(input: Vec<i64>) -> String {
 
 fn do_work(input: String) -> (i64, String) {
     let mut op_codes = input
-        .split(",")
+        .split(',')
         .map(|n| n.parse::<i64>().unwrap())
         .collect::<Vec<i64>>();
 
@@ -45,7 +45,7 @@ fn do_work(input: String) -> (i64, String) {
         idx += 4;
     }
 
-    let output = op_codes[0].clone();
+    let output = op_codes[0];
     let op_code_string = turn_vec_to_string(op_codes);
     (output, op_code_string)
 }
@@ -57,7 +57,7 @@ pub fn calculate() {
     let contents = fs::read_to_string(filename).expect("Something went wrong reading the file");
 
     let mut op_codes = contents
-        .split(",")
+        .split(',')
         .map(|n| n.parse::<i64>().unwrap())
         .collect::<Vec<i64>>();
 
@@ -73,7 +73,7 @@ pub fn calculate() {
             op_codes[2] = verb;
 
             let (output, _) = do_work(turn_vec_to_string(op_codes.clone()));
-            if output == 19690720 {
+            if output == 19_690_720 {
                 println!("noun: {}, verb: {}", noun, verb);
             }
         }

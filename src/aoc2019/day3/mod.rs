@@ -7,7 +7,7 @@ fn create_vectors_from_path(input: String) -> Vec<Point> {
     let mut vectors: Vec<Point> = Vec::new();
     let mut last_positon = (0, 0);
 
-    for command in input.split(",") {
+    for command in input.split(',') {
         let (direction, tail) = command.split_at(1);
         let distance = tail.parse::<i64>().unwrap();
 
@@ -27,7 +27,7 @@ fn create_vectors_from_path(input: String) -> Vec<Point> {
     vectors
 }
 
-fn find_intersections(lhs: &Vec<Point>, rhs: &Vec<Point>) -> Vec<Point> {
+fn find_intersections(lhs: &[Point], rhs: &[Point]) -> Vec<Point> {
     let lhs: HashSet<_> = HashSet::from_iter(lhs.iter().cloned());
     let rhs: HashSet<_> = HashSet::from_iter(rhs.iter().cloned());
 
@@ -38,7 +38,7 @@ fn find_intersections(lhs: &Vec<Point>, rhs: &Vec<Point>) -> Vec<Point> {
     needles
 }
 
-fn calculate_signal_distance(point: Point, haystack: &Vec<Point>) -> i64 {
+fn calculate_signal_distance(point: Point, haystack: &[Point]) -> i64 {
     haystack.iter().position(|&r| r == point).unwrap() as i64 + 1
 }
 

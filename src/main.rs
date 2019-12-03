@@ -1,3 +1,5 @@
+#![warn(clippy::all)]
+
 pub mod aoc2019;
 
 fn main() {

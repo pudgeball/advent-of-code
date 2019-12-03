@@ -13,7 +13,7 @@ pub fn calculate() {
         let module_mass = line.parse::<i64>().unwrap();
         // Part One
         let mut added_fuel = calculate_required_fuel(module_mass);
-        total_fuel_part_one = total_fuel_part_one + added_fuel;
+        total_fuel_part_one += added_fuel;
 
         // Part Two
         while added_fuel > 0 {
