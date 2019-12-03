@@ -32,5 +32,5 @@ pub fn cacluate() {
 }
 
 fn calculate_required_fuel(module_mass: i64) -> i64 {
-    return (module_mass / 3) - 2;
+    (module_mass / 3) - 2
 }
