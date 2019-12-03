@@ -20,20 +20,16 @@ fn do_work(input: String) -> (i64, String) {
 
     let mut idx = 0;
     loop {
-        let op_1 = op_codes[idx];
+        let (op_1, op_2, op_3, op_4) = (
+            op_codes[idx],
+            *op_codes.get(idx + 1).unwrap_or(&0) as usize,
+            *op_codes.get(idx + 2).unwrap_or(&0) as usize,
+            *op_codes.get(idx + 3).unwrap_or(&0) as usize,
+        );
 
         match op_1 {
-            1 | 2 => {
-                let op_2 = op_codes[idx + 1] as usize;
-                let op_3 = op_codes[idx + 2] as usize;
-                let op_4 = op_codes[idx + 3] as usize;
-
-                if op_1 == 1 {
-                    op_codes[op_4] = op_codes[op_2] + op_codes[op_3]
-                } else {
-                    op_codes[op_4] = op_codes[op_2] * op_codes[op_3]
-                }
-            }
+            1 => op_codes[op_4] = op_codes[op_2] + op_codes[op_3],
+            2 => op_codes[op_4] = op_codes[op_2] * op_codes[op_3],
             99 => break,
             _ => panic!("Unknown op code"),
         }
