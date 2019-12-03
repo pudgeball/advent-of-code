@@ -1,6 +1,6 @@
 use std::fs;
 
-pub fn cacluate() {
+pub fn calculate() {
     let filename =
         "/users/nickmcguire/projects/github/advent-of-code/src/twenty_nineteen/one/input.txt";
 

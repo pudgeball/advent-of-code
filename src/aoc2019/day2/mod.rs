@@ -50,7 +50,7 @@ fn do_work(input: String) -> (i64, String) {
     (output, op_code_string)
 }
 
-pub fn cacluate() {
+pub fn calculate() {
     let filename =
         "/users/nickmcguire/projects/github/advent-of-code/src/twenty_nineteen/two/input.txt";
 

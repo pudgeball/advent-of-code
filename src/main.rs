@@ -1,5 +1,5 @@
-pub mod twenty_nineteen;
+pub mod aoc2019;
 
 fn main() {
-    twenty_nineteen::day3::cacluate();
+    aoc2019::day3::calculate();
 }
