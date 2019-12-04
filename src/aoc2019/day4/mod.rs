@@ -13,15 +13,25 @@ pub fn password_is_valid(input: i64) -> bool {
     }
 
     let mut last_number: Option<u32> = None;
+    let mut current_adjacent_vec: Vec<u32> = Vec::new();
+    let mut adjacent_vec: Vec<Vec<u32>> = Vec::new();
     for n in chars {
         if last_number.is_none() || last_number != Some(n) {
-            last_number = Some(n)
+            last_number = Some(n);
+
+            if !current_adjacent_vec.is_empty() {
+                adjacent_vec.push(current_adjacent_vec.clone());
+            }
+            current_adjacent_vec = vec![n];
         } else {
-            return true;
+            current_adjacent_vec.push(n);
         }
     }
+    if !current_adjacent_vec.is_empty() {
+        adjacent_vec.push(current_adjacent_vec.clone());
+    }
 
-    false
+    adjacent_vec.iter().any(|av| av.len() == 2)
 }
 
 pub fn calculate() {
@@ -38,7 +48,13 @@ pub fn calculate() {
 
 #[test]
 fn test_examples() {
-    assert_eq!(true, password_is_valid(111_111));
+    // Part 1
+    // assert_eq!(true,  password_is_valid(111_111));
     assert_eq!(false, password_is_valid(223_450));
     assert_eq!(false, password_is_valid(123_789));
+
+    // Part 2
+    assert_eq!(true, password_is_valid(112_233));
+    assert_eq!(false, password_is_valid(123_444));
+    assert_eq!(true, password_is_valid(111_122));
 }
