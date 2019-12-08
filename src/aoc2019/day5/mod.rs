@@ -129,10 +129,44 @@ fn turn_vec_to_string(input: Vec<i64>) -> String {
 
 #[derive(Clone, Debug, PartialEq)]
 enum OpCode {
-    Add { p1: i64, p2: i64, p3: i64 },
-    Multiply { p1: i64, p2: i64, p3: i64 },
-    Input { p1: i64 },
-    Output { p1: i64 },
+    Add {
+        p1: i64,
+        p2: i64,
+        p3: i64,
+    },
+    Multiply {
+        p1: i64,
+        p2: i64,
+        p3: i64,
+    },
+    Input {
+        p1: i64,
+    },
+    Output {
+        p1: i64,
+    },
+    /// If the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing
+    JumpIfTrue {
+        p1: i64,
+        p2: i64,
+    },
+    /// If the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing
+    JumpIfFalse {
+        p1: i64,
+        p2: i64,
+    },
+    /// If the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0
+    LessThan {
+        p1: i64,
+        p2: i64,
+        p3: i64,
+    },
+    /// If the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0
+    Equals {
+        p1: i64,
+        p2: i64,
+        p3: i64,
+    },
     Quit,
 }
 
@@ -156,6 +190,56 @@ fn parse_digits(n: i64) -> Vec<i64> {
     digits
 }
 
+fn get_param_value(mode: i64, value: i64, values: &[i64]) -> i64 {
+    if mode == 0 {
+        values[value as usize]
+    } else {
+        value
+    }
+}
+
+// Hack idea, the output field is always last
+
+fn update_parameters(
+    op_code: OpCode,
+    p1_mode: i64,
+    p2_mode: i64,
+    _p3_mode: i64,
+    values: &[i64],
+) -> OpCode {
+    match op_code {
+        OpCode::Add { p1, p2, p3 } => OpCode::Add {
+            p1: get_param_value(p1_mode, p1, values),
+            p2: get_param_value(p2_mode, p2, values),
+            p3,
+        },
+        OpCode::Multiply { p1, p2, p3 } => OpCode::Multiply {
+            p1: get_param_value(p1_mode, p1, values),
+            p2: get_param_value(p2_mode, p2, values),
+            p3,
+        },
+        OpCode::JumpIfTrue { p1, p2 } => OpCode::JumpIfTrue {
+            p1: get_param_value(p1_mode, p1, values),
+            p2: get_param_value(p2_mode, p2, values),
+        },
+        OpCode::JumpIfFalse { p1, p2 } => OpCode::JumpIfFalse {
+            p1: get_param_value(p1_mode, p1, values),
+            p2: get_param_value(p2_mode, p2, values),
+        },
+        OpCode::LessThan { p1, p2, p3 } => OpCode::LessThan {
+            p1: get_param_value(p1_mode, p1, values),
+            p2: get_param_value(p2_mode, p2, values),
+            p3,
+        },
+        OpCode::Equals { p1, p2, p3 } => OpCode::Equals {
+            p1: get_param_value(p1_mode, p1, values),
+            p2: get_param_value(p2_mode, p2, values),
+            p3,
+        },
+        _ => op_code,
+    }
+}
+
 pub fn interpret_instructions(input: String) -> String {
     let mut values = input
         .split(',')
@@ -163,8 +247,17 @@ pub fn interpret_instructions(input: String) -> String {
         .collect::<Vec<i64>>();
 
     let mut idx = 0;
+    let mut loop_count = 0;
+    let mut last_value = 0;
     loop {
         let value = values[idx];
+        if last_value != value {
+            loop_count = 0;
+        }
+        if loop_count > 5 {
+            break;
+        }
+
         let digits = parse_digits(value);
 
         let raw_op_code =
@@ -175,59 +268,44 @@ pub fn interpret_instructions(input: String) -> String {
             *digits.get(4).unwrap_or(&0),
         );
 
+        let (p1, p2, p3) = (
+            *values.get(idx + 1).unwrap_or(&0),
+            *values.get(idx + 2).unwrap_or(&0),
+            *values.get(idx + 3).unwrap_or(&0),
+        );
+        // println!("Index: {}, p1: {}, p2: {}, p3: {}", &idx, &p1, &p2, &p3);
+
         let instruction_op_code: OpCode = match raw_op_code {
-            1 => OpCode::Add {
-                p1: values[idx + 1],
-                p2: values[idx + 2],
-                p3: values[idx + 3],
-            },
-            2 => OpCode::Multiply {
-                p1: values[idx + 1],
-                p2: values[idx + 2],
-                p3: values[idx + 3],
-            },
-            3 => OpCode::Input {
-                p1: values[idx + 1],
-            },
-            4 => OpCode::Output {
-                p1: values[idx + 1],
-            },
+            1 => OpCode::Add { p1, p2, p3 },
+            2 => OpCode::Multiply { p1, p2, p3 },
+            3 => OpCode::Input { p1 },
+            4 => OpCode::Output { p1 },
+            5 => OpCode::JumpIfTrue { p1, p2 },
+            6 => OpCode::JumpIfFalse { p1, p2 },
+            7 => OpCode::LessThan { p1, p2, p3 },
+            8 => OpCode::Equals { p1, p2, p3 },
             99 => OpCode::Quit,
             _ => panic!("Bad op code {}", raw_op_code),
         };
+        let instruction_op_code =
+            update_parameters(instruction_op_code, p1_mode, p2_mode, p3_mode, &values);
 
-        let instruction = Instruction {
-            op_code: instruction_op_code,
-            p1_mode,
-            p2_mode,
-            p3_mode,
-        };
-        println!("{:?}", instruction);
+        // let instruction = Instruction {
+        //     op_code: instruction_op_code,
+        //     p1_mode,
+        //     p2_mode,
+        //     p3_mode,
+        // };
+        println!("idx({}): {:?} - {:?}", idx, instruction_op_code, values);
 
-        match instruction.op_code {
+        match instruction_op_code {
             OpCode::Add { p1, p2, p3 } => {
                 idx += 4;
-                values[p3 as usize] = if instruction.p1_mode == 0 {
-                    values[p1 as usize]
-                } else {
-                    p1
-                } + if instruction.p2_mode == 0 {
-                    values[p2 as usize]
-                } else {
-                    p2
-                }
+                values[p3 as usize] = p1 + p2
             }
             OpCode::Multiply { p1, p2, p3 } => {
                 idx += 4;
-                values[p3 as usize] = if instruction.p1_mode == 0 {
-                    values[p1 as usize]
-                } else {
-                    p1
-                } * if instruction.p2_mode == 0 {
-                    values[p2 as usize]
-                } else {
-                    p2
-                }
+                values[p3 as usize] = p1 * p2
             }
             OpCode::Input { p1 } => {
                 let mut buffer = String::new();
@@ -243,8 +321,34 @@ pub fn interpret_instructions(input: String) -> String {
                 idx += 2;
                 println!("{}", values[p1 as usize])
             }
+            OpCode::JumpIfTrue { p1, p2 } => {
+                if p1 > 0 {
+                    idx = p2 as usize;
+                } else {
+                    idx += 3;
+                }
+            }
+            OpCode::JumpIfFalse { p1, p2 } => {
+                if p1 == 0 {
+                    idx = p2 as usize;
+                } else {
+                    idx += 3;
+                }
+            }
+            OpCode::LessThan { p1, p2, p3 } => {
+                idx += 4;
+                let is_less = if p1 < p2 { 1 } else { 0 };
+                values[p3 as usize] = is_less;
+            }
+            OpCode::Equals { p1, p2, p3 } => {
+                idx += 4;
+                let equals = if p1 == p2 { 1 } else { 0 };
+                values[p3 as usize] = equals;
+            }
             OpCode::Quit => break,
         }
+        loop_count += 1;
+        last_value = value;
     }
 
     turn_vec_to_string(values)
