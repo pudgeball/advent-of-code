@@ -1,5 +1,5 @@
 use std::fs;
-// use std::io::{self, Read};
+use std::io;
 
 // #[derive(Debug)]
 // struct InstructionCode {
@@ -131,6 +131,8 @@ fn turn_vec_to_string(input: Vec<i64>) -> String {
 enum OpCode {
     Add { p1: i64, p2: i64, p3: i64 },
     Multiply { p1: i64, p2: i64, p3: i64 },
+    Input { p1: i64 },
+    Output { p1: i64 },
     Quit,
 }
 
@@ -153,17 +155,6 @@ fn parse_digits(n: i64) -> Vec<i64> {
 
     digits
 }
-
-// fn parse_op_code(input: &i64) -> (i64, ) {
-//     let digits = parse_digits(input);
-
-//     InstructionCode {
-//         op_code: ,
-//         p1_mode: *digits.get(2).unwrap_or(&0),
-//         p2_mode: *digits.get(3).unwrap_or(&0),
-//         p3_mode: *digits.get(4).unwrap_or(&0),
-//     }
-// }
 
 pub fn interpret_instructions(input: String) -> String {
     let mut values = input
@@ -195,6 +186,12 @@ pub fn interpret_instructions(input: String) -> String {
                 p2: values[idx + 2],
                 p3: values[idx + 3],
             },
+            3 => OpCode::Input {
+                p1: values[idx + 1],
+            },
+            4 => OpCode::Output {
+                p1: values[idx + 1],
+            },
             99 => OpCode::Quit,
             _ => panic!("Bad op code {}", raw_op_code),
         };
@@ -210,27 +207,45 @@ pub fn interpret_instructions(input: String) -> String {
         match instruction.op_code {
             OpCode::Add { p1, p2, p3 } => {
                 idx += 4;
-                values[p3 as usize] = values[p1 as usize] + values[p2 as usize]
+                values[p3 as usize] = if instruction.p1_mode == 0 {
+                    values[p1 as usize]
+                } else {
+                    p1
+                } + if instruction.p2_mode == 0 {
+                    values[p2 as usize]
+                } else {
+                    p2
+                }
             }
             OpCode::Multiply { p1, p2, p3 } => {
                 idx += 4;
-                values[p3 as usize] = values[p1 as usize] * values[p2 as usize]
+                values[p3 as usize] = if instruction.p1_mode == 0 {
+                    values[p1 as usize]
+                } else {
+                    p1
+                } * if instruction.p2_mode == 0 {
+                    values[p2 as usize]
+                } else {
+                    p2
+                }
+            }
+            OpCode::Input { p1 } => {
+                let mut buffer = String::new();
+                io::stdin()
+                    .read_line(&mut buffer)
+                    .expect("Failed to read from stdin");
+                let input = buffer.trim().parse::<i64>().expect("Unable to parse");
+
+                idx += 2;
+                values[p1 as usize] = input;
+            }
+            OpCode::Output { p1 } => {
+                idx += 2;
+                println!("{}", values[p1 as usize])
             }
             OpCode::Quit => break,
         }
     }
-
-    // for instruction in instructions {
-    //     match instruction.op_code {
-    //         OpCode::Add { p1, p2, p3 } => {
-    //             memory[p3 as usize] = memory[p1 as usize] + memory[p2 as usize]
-    //         }
-    //         OpCode::Multiply { p1, p2, p3 } => {
-    //             memory[p3 as usize] = memory[p1 as usize] * memory[p2 as usize]
-    //         }
-    //         OpCode::Quit => break,
-    //     }
-    // }
 
     turn_vec_to_string(values)
 }
