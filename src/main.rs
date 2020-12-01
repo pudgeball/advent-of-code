@@ -1,7 +1,8 @@
 #![warn(clippy::all)]
 
-pub mod aoc2019;
+mod aoc2019;
+mod aoc2020;
 
 fn main() {
-    aoc2019::day5::calculate();
+    aoc2020::day1::run();
 }
