@@ -1,10 +1,7 @@
 //!
 
 fn find_two_value_answer(input: &str) -> usize {
-    let values = input
-        .lines()
-        .map(|v| v.parse::<usize>().unwrap())
-        .collect::<Vec<_>>();
+    let values = crate::util::lines_to_vec(input);
 
     for value in values.iter() {
         for second_value in values.iter() {
@@ -17,10 +14,7 @@ fn find_two_value_answer(input: &str) -> usize {
 }
 
 fn find_three_value_answer(input: &str) -> usize {
-    let values = input
-        .lines()
-        .map(|v| v.parse::<usize>().unwrap())
-        .collect::<Vec<_>>();
+    let values = crate::util::lines_to_vec(input);
 
     for value in values.iter() {
         for second_value in values.iter() {
@@ -35,16 +29,9 @@ fn find_three_value_answer(input: &str) -> usize {
 }
 
 pub(crate) fn run() {
-    let filename = "/users/nickmcguire/projects/github/advent-of-code/src/aoc2020/day1/input.txt";
-
-    let contents =
-        std::fs::read_to_string(filename).expect("Something went wrong reading the file");
-
-    println!("The part 1 answer is: {}", find_two_value_answer(&contents));
-    println!(
-        "The part 2 answer is: {}",
-        find_three_value_answer(&contents)
-    );
+    let input = crate::util::load_input("aoc2020/day1/input.txt");
+    println!("The part 1 answer is: {}", find_two_value_answer(&input));
+    println!("The part 2 answer is: {}", find_three_value_answer(&input));
 }
 
 #[cfg(test)]
@@ -52,7 +39,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_day() {
+    fn test_examples() {
         assert_eq!(
             find_two_value_answer(
                 r#"1721
