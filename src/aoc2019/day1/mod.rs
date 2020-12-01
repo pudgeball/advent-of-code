@@ -1,4 +1,4 @@
-use std::fs;
+//!
 
 fn do_work(input: Vec<i64>) -> (i64, i64) {
     let mut total_fuel_part_one: i64 = 0;
@@ -19,15 +19,9 @@ fn do_work(input: Vec<i64>) -> (i64, i64) {
     (total_fuel_part_one, total_fuel_part_two)
 }
 
-pub fn calculate() {
-    let filename =
-        "/users/nickmcguire/projects/github/advent-of-code/src/twenty_nineteen/one/input.txt";
-
-    let contents = fs::read_to_string(filename).expect("Something went wrong reading the file");
-    let input = contents
-        .lines()
-        .map(|l| l.parse::<i64>().unwrap())
-        .collect::<Vec<i64>>();
+pub(crate) fn calculate() {
+    let contents = crate::util::load_input("aoc2019/day1/input.txt");
+    let input = crate::util::lines_to_vec(&contents);
 
     let (total_fuel_part_one, total_fuel_part_two) = do_work(input);
 

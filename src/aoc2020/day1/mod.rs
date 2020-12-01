@@ -1,7 +1,7 @@
 //!
 
 fn find_two_value_answer(input: &str) -> usize {
-    let values = crate::util::lines_to_vec(input);
+    let values = crate::util::lines_to_vec::<usize>(input);
 
     for value in values.iter() {
         for second_value in values.iter() {
@@ -14,7 +14,7 @@ fn find_two_value_answer(input: &str) -> usize {
 }
 
 fn find_three_value_answer(input: &str) -> usize {
-    let values = crate::util::lines_to_vec(input);
+    let values = crate::util::lines_to_vec::<usize>(input);
 
     for value in values.iter() {
         for second_value in values.iter() {

@@ -1,4 +1,4 @@
-use std::fs;
+//!
 
 fn turn_vec_to_string(input: Vec<i64>) -> String {
     let mut returned = "".to_string();
@@ -41,16 +41,13 @@ fn do_work(input: String) -> (i64, String) {
     (output, op_code_string)
 }
 
-pub fn calculate() {
-    let filename =
-        "/users/nickmcguire/projects/github/advent-of-code/src/twenty_nineteen/two/input.txt";
-
-    let contents = fs::read_to_string(filename).expect("Something went wrong reading the file");
+pub(crate) fn calculate() {
+    let contents = crate::util::load_input("aoc2019/day2/input.txt");
 
     let mut op_codes = contents
         .split(',')
         .map(|n| n.parse::<i64>().unwrap())
-        .collect::<Vec<i64>>();
+        .collect::<Vec<_>>();
 
     op_codes[1] = 12;
     op_codes[2] = 2;

@@ -1,4 +1,3 @@
-use std::fs;
 use std::io;
 
 fn turn_vec_to_string(input: Vec<i64>) -> String {
@@ -122,7 +121,7 @@ fn update_parameters(
     }
 }
 
-pub fn interpret_instructions(input: String) -> String {
+pub(crate) fn interpret_instructions(input: String) -> String {
     let mut values = input
         .split(',')
         .map(|n| n.parse::<i64>().unwrap())
@@ -218,10 +217,8 @@ pub fn interpret_instructions(input: String) -> String {
     turn_vec_to_string(values)
 }
 
-pub fn calculate() {
-    let filename = "/users/nickmcguire/projects/github/advent-of-code/src/aoc2019/day5/input.txt";
-    let input = fs::read_to_string(filename).expect("Something went wrong reading the file");
-
+pub(crate) fn calculate() {
+    let input = crate::util::load_input("aoc2019/day5/input.txt");
     println!("input: {}", &input);
     println!("output: {}", interpret_instructions(input));
 }

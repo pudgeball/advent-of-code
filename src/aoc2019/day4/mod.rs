@@ -1,4 +1,6 @@
-pub fn password_is_valid(input: i64) -> bool {
+//!
+
+fn password_is_valid(input: i64) -> bool {
     if input < 100_000 || input > 999_999 {
         return false;
     }
@@ -34,7 +36,7 @@ pub fn password_is_valid(input: i64) -> bool {
     adjacent_vec.iter().any(|av| av.len() == 2)
 }
 
-pub fn calculate() {
+pub(crate) fn calculate() {
     let mut password_count = 0;
 
     for i in 347_312..805_915 {
