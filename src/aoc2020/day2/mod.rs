@@ -18,6 +18,13 @@ impl<'a> Password<'a> {
 
         character_count >= self.minimum_character && character_count <= self.maximum_character
     }
+
+    fn is_positionally_valid(&self) -> bool {
+        let char_1 = self.password.chars().nth(self.minimum_character - 1);
+        let char_2 = self.password.chars().nth(self.maximum_character - 1);
+
+        (char_1 == Some(self.required_character)) ^ (char_2 == Some(self.required_character))
+    }
 }
 
 impl<'a> From<&'a str> for Password<'a> {
@@ -45,20 +52,15 @@ impl<'a> From<&'a str> for Password<'a> {
 
 fn part_1(input: &str) -> usize {
     let passwords = input.lines().map(|l| l.into()).collect::<Vec<Password>>();
-
-    println!(
-        "{:?}",
-        passwords
-            .iter()
-            .filter(|p| !p.is_valid())
-            .collect::<Vec<_>>()
-    );
-
     passwords.iter().filter(|p| p.is_valid()).count()
 }
 
 fn part_2(input: &str) -> usize {
-    0
+    let passwords = input.lines().map(|l| l.into()).collect::<Vec<Password>>();
+    passwords
+        .iter()
+        .filter(|p| p.is_positionally_valid())
+        .count()
 }
 
 pub(crate) fn run() {
@@ -80,6 +82,15 @@ mod test {
 2-9 c: ccccccccc"#
             ),
             2
+        );
+
+        assert_eq!(
+            part_2(
+                r#"1-3 a: abcde
+1-3 b: cdefg
+2-9 c: ccccccccc"#
+            ),
+            1
         );
     }
 }
