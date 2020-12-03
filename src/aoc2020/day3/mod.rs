@@ -1,43 +1,14 @@
 //!
 
-fn part_1(input: &str) -> usize {
-    let mut column = 3;
-    let mut row = 1;
+fn traverse_map(input: &str, column_stride: usize, row_stride: usize) -> i64 {
+    let mut column = column_stride;
+    let mut row = row_stride;
 
     let puzzle_width = input.lines().next().unwrap().len();
-
-    /*
-    ..##.......
-    #...#...#..
-    .#....#..#.
-    ..#.#...#.#
-    .#...##..#.
-    ..#.##.....
-    .#.#.#....#
-    .#........#
-    #.##...#...
-    #...##....#
-    .#..#...#.#
-
-        **/
-    /*
-    ..##.........##.........##.........##.........##.........##.......  --->
-    #..O#...#..#...#...#..#...#...#..#...#...#..#...#...#..#...#...#..
-    .#....X..#..#....#..#..#....#..#..#....#..#..#....#..#..#....#..#.
-    ..#.#...#O#..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#
-    .#...##..#..X...##..#..#...##..#..#...##..#..#...##..#..#...##..#.
-    ..#.##.......#.X#.......#.##.......#.##.......#.##.......#.##.....  --->
-    .#.#.#....#.#.#.#.O..#.#.#.#....#.#.#.#....#.#.#.#....#.#.#.#....#
-    .#........#.#........X.#........#.#........#.#........#.#........#
-    #.##...#...#.##...#...#.X#...#...#.##...#...#.##...#...#.##...#...
-    #...##....##...##....##...#X....##...##....##...##....##...##....#
-    .#..#...#.#.#..#...#.#.#..#...X.#.#..#...#.#.#..#...#.#.#..#...#.#  --->
-
-    */
     let mut hit_count = 0;
 
     while row < input.lines().count() {
-        let column_position = if column > puzzle_width {
+        let column_position = if column >= puzzle_width {
             column - (puzzle_width * (column / puzzle_width))
         } else {
             column
@@ -49,20 +20,23 @@ fn part_1(input: &str) -> usize {
             hit_count += 1;
         }
 
-        // println!(
-        //     "Row<{}>, Column<{}>: char<{:?}> from position {}",
-        //     row, column, map_char, column_position
-        // );
-
-        column += 3;
-        row += 1;
+        column += column_stride;
+        row += row_stride;
     }
 
     hit_count
 }
 
-fn part_2(input: &str) -> usize {
-    0
+fn part_1(input: &str) -> i64 {
+    traverse_map(input, 3, 1)
+}
+
+fn part_2(input: &str) -> i64 {
+    traverse_map(input, 1, 1)
+        * traverse_map(input, 3, 1)
+        * traverse_map(input, 5, 1)
+        * traverse_map(input, 7, 1)
+        * traverse_map(input, 1, 2)
 }
 
 pub(crate) fn run() {
@@ -92,6 +66,23 @@ mod test {
 .#..#...#.#"#
             ),
             7
-        )
+        );
+
+        assert_eq!(
+            part_2(
+                r#"..##.......
+#...#...#..
+.#....#..#.
+..#.#...#.#
+.#...##..#.
+..#.##.....
+.#.#.#....#
+.#........#
+#.##...#...
+#...##....#
+.#..#...#.#"#
+            ),
+            336
+        );
     }
 }
