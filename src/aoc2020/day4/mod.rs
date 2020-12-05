@@ -152,46 +152,30 @@ impl From<String> for Passport {
     }
 }
 
-fn parse_lines<'a>(input: &'a str) -> impl IntoIterator<Item = String> {
-    let mut output = vec![];
-    let lines = input.lines();
-
-    let mut current_input = String::new();
-
-    for line in lines {
-        if line == "" {
-            output.push(current_input);
-            current_input = String::new();
-        } else {
-            current_input = format!(
-                "{}{}{}",
-                current_input,
-                if current_input.len() > 0 { " " } else { "" },
-                line
-            );
-        }
-    }
-    if current_input.len() > 0 {
-        output.push(current_input);
-    }
-
-    output
+fn parse_lines<'a>(input: &str) -> Vec<String> {
+    input.split("\n\n").map(|s| s.replace("\n", " ")).collect()
 }
 
 fn part_1(input: &str) -> usize {
-    let passwords = parse_lines(input)
+    parse_lines(input)
         .into_iter()
-        .map(|l| l.into())
-        .collect::<Vec<Passport>>();
-    passwords.iter().filter(|p| p.is_valid()).count()
+        .map(|l| {
+            let passport: Passport = l.into();
+            passport
+        })
+        .filter(|p| p.is_valid())
+        .count()
 }
 
 fn part_2(input: &str) -> usize {
-    let passwords = parse_lines(input)
+    parse_lines(input)
         .into_iter()
-        .map(|l| l.into())
-        .collect::<Vec<Passport>>();
-    passwords.iter().filter(|p| p.part_2_valid()).count()
+        .map(|l| {
+            let passport: Passport = l.into();
+            passport
+        })
+        .filter(|p| p.part_2_valid())
+        .count()
 }
 
 pub(crate) fn run() {
