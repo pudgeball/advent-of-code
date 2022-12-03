@@ -9,7 +9,7 @@ protocol Day {
 @main
 public struct AdventOfCode {
     public static func main() {
-        let day: any Day = DayOne()
+        let day: any Day = DayTwo()
         
         do {
             print("Sample Input: \(try day.runSample())")
