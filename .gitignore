@@ -1,3 +1,15 @@
+# Rust
 /target
 **/*.rs.bk
 .DS_Store
+
+# SwiftPM
+
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+DerivedData/
+.swiftpm/config/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
