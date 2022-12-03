@@ -10,19 +10,49 @@ import XCTest
 
 final class AoC2022Tests: XCTestCase {
     func testDayOne() throws {
-        let day = DayOne()
-        XCTAssertEqual(try day.runSample(), 24000)
+        let sampleInput = """
+        1000
+        2000
+        3000
+
+        4000
+
+        5000
+        6000
+
+        7000
+        8000
+        9000
+
+        10000
+        """.puzzleInput
+        XCTAssertEqual(try DayOne().partOne(sampleInput), 24_000)
     }
     
     func testDayTwo() throws {
+        let sampleInput = """
+        A Y
+        B X
+        C Z
+        """.puzzleInput
+        
         let day = DayTwo()
-        XCTAssertEqual(try day.runSample(), 15)
-        XCTAssertEqual(try day.runSampleTwo(), 12)
+        XCTAssertEqual(try day.partOne(sampleInput), 15)
+        XCTAssertEqual(try day.partTwo(sampleInput), 12)
     }
     
     func testDayThree() throws {
         let day = DayThree()
-        XCTAssertEqual(try day.runSample(), 157)
-        XCTAssertEqual(try day.runSampleTwo(), 70)
+        let sampleInput = """
+        vJrwpWtwJgWrhcsFMMfFFhFp
+        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+        PmmdzqPrVvPwwTWBwg
+        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+        ttgJtRGJQctTZtZT
+        CrZsJsPPZsGzwwsLwLmpwMDw
+        """.puzzleInput
+        
+        XCTAssertEqual(try day.partOne(sampleInput), 157)
+        XCTAssertEqual(try day.partTwo(sampleInput), 70)
     }
 }

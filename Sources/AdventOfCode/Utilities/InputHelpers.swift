@@ -12,10 +12,8 @@ struct Input {
         case noFile
     }
     
-    /// 
-    internal static func get(_ path: String, initialPath: String = #file) throws -> String {
-        let inputPath = URL(fileURLWithPath: initialPath).deletingLastPathComponent().appending(path: path)
-        guard let inputFile = String(data: try Data(contentsOf: inputPath), encoding: .utf8) else {
+    internal static func get(filePath: URL) throws -> String {
+        guard let inputFile = String(data: try Data(contentsOf: filePath), encoding: .utf8) else {
             throw InputError.noFile
         }
         return inputFile

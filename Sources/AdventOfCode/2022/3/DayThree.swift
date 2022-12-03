@@ -7,39 +7,20 @@
 
 import Foundation
 
-public final class DayThree: DayEnhanced {
-    public func runSample() throws -> Int {
-        try getPriorities("""
-        vJrwpWtwJgWrhcsFMMfFFhFp
-        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-        PmmdzqPrVvPwwTWBwg
-        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-        ttgJtRGJQctTZtZT
-        CrZsJsPPZsGzwwsLwLmpwMDw
-        """)
+public final class DayThree: Day {
+    var puzzleInput: PuzzleInput = .init()
+    
+    public func partOne(_ puzzleInput: PuzzleInput) throws -> Int {
+        try getPriorities(puzzleInput)
     }
     
-    public func runSampleTwo() throws -> Int {
-        try getMorePriorities("""
-        vJrwpWtwJgWrhcsFMMfFFhFp
-        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-        PmmdzqPrVvPwwTWBwg
-        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-        ttgJtRGJQctTZtZT
-        CrZsJsPPZsGzwwsLwLmpwMDw
-        """)
+    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
+        try getMorePriorities(puzzleInput)
     }
 
-    public func runPartOne() throws -> Int {
-        try getPriorities(Input.get("./Input.txt"))
-    }
-    
-    public func runPartTwo() throws -> Int {
-        try getMorePriorities(Input.get("./Input.txt"))
-    }
-
-    private func getPriorities(_ input: String) throws -> Int {
-        input.split(separator: "\n")
+    func getPriorities(_ input: PuzzleInput) throws -> Int {
+        try input.value
+            .split(separator: "\n")
             .map() { line in
                 let halfCount = line.count / 2
                 let firstHalf = Set(line.dropLast(halfCount))
@@ -51,8 +32,9 @@ public final class DayThree: DayEnhanced {
             .reduce(0 , +)
     }
     
-    private func getMorePriorities(_ input: String) throws -> Int {
-        input.split(separator: "\n")
+    func getMorePriorities(_ input: PuzzleInput) throws -> Int {
+        try input.value
+            .split(separator: "\n")
             .chunked(into: 3)
             .compactMap { group in
                 group

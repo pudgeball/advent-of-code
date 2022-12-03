@@ -8,6 +8,8 @@
 import Foundation
 
 public final class DayOne: Day {
+    var puzzleInput: PuzzleInput = .init()
+    
     private enum DayOneError: Error {
         case noElfFound
     }
@@ -20,35 +22,17 @@ public final class DayOne: Day {
         }
     }
     
-    public func runSample() throws -> Int {
-        try getElvesByCalories("""
-        1000
-        2000
-        3000
-
-        4000
-
-        5000
-        6000
-
-        7000
-        8000
-        9000
-
-        10000
-        """).first?.calories ?? 0
+    public func partOne(_ puzzleInput: PuzzleInput) throws -> Int {
+        try getElvesByCalories(puzzleInput).first?.calories ?? 0
     }
     
-    public func runPartOne() throws -> Int {
-        try getElvesByCalories(Input.get("./Input.txt")).first?.calories ?? 0
-    }
-    
-    public func runPartTwo() throws -> Int {
-        try getElvesByCalories(Input.get("./Input.txt")).prefix(3).map(\.calories).reduce(0, +)
+    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
+        try getElvesByCalories(puzzleInput).prefix(3).map(\.calories).reduce(0, +)
     }
 
-    private func getElvesByCalories(_ input: String) throws -> [Elf] {
-        input.split(separator: "\n\n")
+    private func getElvesByCalories(_ input: PuzzleInput) throws -> [Elf] {
+        try input.value
+            .split(separator: "\n\n")
             .map() { Elf(calorieInput: $0.split(separator: "\n").map(String.init)) }
             .sorted(by: { $0.calories > $1.calories })
     }

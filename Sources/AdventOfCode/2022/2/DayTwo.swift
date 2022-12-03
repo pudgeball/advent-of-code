@@ -7,7 +7,9 @@
 
 import Foundation
 
-public final class DayTwo: DayEnhanced {
+public final class DayTwo: Day {
+    var puzzleInput: PuzzleInput = .init()
+    
     enum DayTwoError: Error {
         case invalidCharacter
     }
@@ -47,32 +49,17 @@ public final class DayTwo: DayEnhanced {
         }
     }
     
-    public func runSample() throws -> Int {
-        try getTotalScore("""
-        A Y
-        B X
-        C Z
-        """)
+    public func partOne(_ puzzleInput: PuzzleInput) throws -> Int {
+        try getTotalScore(puzzleInput)
     }
     
-    public func runSampleTwo() throws -> Int {
-        try getPartTwoScore("""
-        A Y
-        B X
-        C Z
-        """)
-    }
-    
-    public func runPartOne() throws -> Int {
-        try getTotalScore(Input.get("./Input.txt"))
-    }
-    
-    public func runPartTwo() throws -> Int {
-        try getPartTwoScore(Input.get("./Input.txt"))
+    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
+        try getPartTwoScore(puzzleInput)
     }
 
-    private func getTotalScore(_ input: String) throws -> Int {
-        input.split(separator: "\n")
+    private func getTotalScore(_ input: PuzzleInput) throws -> Int {
+        try input.value
+            .split(separator: "\n")
             .map() { line in
                 let theirs = try! line.first!.choiceValue
                 let yours = try! line.last!.choiceValue
@@ -89,8 +76,9 @@ public final class DayTwo: DayEnhanced {
             .reduce(0, +)
     }
     
-    private func getPartTwoScore(_ input: String) throws -> Int {
-        input.split(separator: "\n")
+    private func getPartTwoScore(_ input: PuzzleInput) throws -> Int {
+        try input.value
+            .split(separator: "\n")
             .map() { line in
                 let theirs = try! line.first!.choiceValue
                 let yours = try! line.last!.choiceValue
