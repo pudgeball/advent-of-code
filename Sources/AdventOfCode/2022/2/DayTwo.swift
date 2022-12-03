@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class DayTwo: Day {
+public final class DayTwo: DayEnhanced {
     enum DayTwoError: Error {
         case invalidCharacter
     }
@@ -55,7 +55,7 @@ public final class DayTwo: Day {
         """)
     }
     
-    public func runPartTwoSample() throws -> Int {
+    public func runSampleTwo() throws -> Int {
         try getPartTwoScore("""
         A Y
         B X
@@ -68,9 +68,7 @@ public final class DayTwo: Day {
     }
     
     public func runPartTwo() throws -> Int {
-        print("     runPartTwoSample: \(try runPartTwoSample())")
-        
-        return try getPartTwoScore(Input.get("./Input.txt"))
+        try getPartTwoScore(Input.get("./Input.txt"))
     }
 
     private func getTotalScore(_ input: String) throws -> Int {
