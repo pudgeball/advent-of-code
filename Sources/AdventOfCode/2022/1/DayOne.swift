@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  DayOne.swift
 //  
 //
 //  Created by Nick McGuire on 2022-12-02.
@@ -10,7 +10,6 @@ import Foundation
 public final class DayOne: Day {
     private enum DayOneError: Error {
         case noElfFound
-        case noInputPuzzle
     }
     
     private struct Elf {
@@ -22,7 +21,7 @@ public final class DayOne: Day {
     }
     
     public func runSample() throws -> Int {
-        try getCaloricElf("""
+        try getElvesByCalories("""
         1000
         2000
         3000
@@ -37,24 +36,20 @@ public final class DayOne: Day {
         9000
 
         10000
-        """).calories
+        """).first?.calories ?? 0
     }
     
-    public func runInput() throws -> Int {
-        
-        let inputPath = URL(fileURLWithPath: #file).deletingLastPathComponent().appending(path: "Input.txt")
-        guard let inputFile = String(data: try Data(contentsOf: inputPath), encoding: .utf8) else {
-            throw DayOneError.noInputPuzzle
-        }
-        return try getCaloricElf(inputFile).calories
+    public func runPartOne() throws -> Int {
+        try getElvesByCalories(Input.get("./Input.txt")).first?.calories ?? 0
     }
     
-    private func getCaloricElf(_ input: String) throws -> Elf {
-        let lines = input.split(separator: "\n\n")
-        let elves = lines.map() { Elf(calorieInput: $0.split(separator: "\n").map(String.init)) }
-        guard let elf = elves.sorted(by: { $0.calories > $1.calories }).first else {
-            throw DayOneError.noElfFound
-        }
-        return elf
+    public func runPartTwo() throws -> Int {
+        try getElvesByCalories(Input.get("./Input.txt")).prefix(3).map(\.calories).reduce(0, +)
+    }
+
+    private func getElvesByCalories(_ input: String) throws -> [Elf] {
+        input.split(separator: "\n\n")
+            .map() { Elf(calorieInput: $0.split(separator: "\n").map(String.init)) }
+            .sorted(by: { $0.calories > $1.calories })
     }
 }

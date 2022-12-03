@@ -2,7 +2,8 @@ protocol Day {
     associatedtype Value
     
     func runSample() throws -> Value
-    func runInput() throws -> Value
+    func runPartOne() throws -> Value
+    func runPartTwo() throws -> Value
 }
 
 @main
@@ -12,7 +13,8 @@ public struct AdventOfCode {
         
         do {
             print("Sample Input: \(try day.runSample())")
-            print("Puzzle Input: \(try day.runInput())")
+            print("Part One: \(try day.runPartOne())")
+            print("Part Two: \(try day.runPartTwo())")
         } catch {
             print("Unable to run puzzle. \(error)")
         }
