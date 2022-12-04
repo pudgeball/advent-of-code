@@ -55,4 +55,19 @@ final class AoC2022Tests: XCTestCase {
         XCTAssertEqual(try day.partOne(sampleInput), 157)
         XCTAssertEqual(try day.partTwo(sampleInput), 70)
     }
+    
+    func testDayFour() throws {
+        let day = DayFour()
+        let sampleInput = """
+        2-4,6-8
+        2-3,4-5
+        5-7,7-9
+        2-8,3-7
+        6-6,4-6
+        2-6,4-8
+        """.puzzleInput
+        
+        XCTAssertEqual(try day.partOne(sampleInput), 2)
+        XCTAssertEqual(try day.partTwo(sampleInput), 4)
+    }
 }

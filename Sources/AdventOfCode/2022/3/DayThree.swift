@@ -11,15 +11,7 @@ public final class DayThree: Day {
     var puzzleInput: PuzzleInput = .init()
     
     public func partOne(_ puzzleInput: PuzzleInput) throws -> Int {
-        try getPriorities(puzzleInput)
-    }
-    
-    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
-        try getMorePriorities(puzzleInput)
-    }
-
-    func getPriorities(_ input: PuzzleInput) throws -> Int {
-        try input.value
+        try puzzleInput.value
             .split(separator: "\n")
             .map() { line in
                 let halfCount = line.count / 2
@@ -32,8 +24,8 @@ public final class DayThree: Day {
             .reduce(0 , +)
     }
     
-    func getMorePriorities(_ input: PuzzleInput) throws -> Int {
-        try input.value
+    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
+        try puzzleInput.value
             .split(separator: "\n")
             .chunked(into: 3)
             .compactMap { group in

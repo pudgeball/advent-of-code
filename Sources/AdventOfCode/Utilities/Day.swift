@@ -20,6 +20,6 @@ extension Day {
     }
     
     func partTwo() throws -> Value {
-        try partOne(self.puzzleInput)
+        try partTwo(self.puzzleInput)
     }
 }
