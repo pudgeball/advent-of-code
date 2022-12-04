@@ -1,7 +1,7 @@
 @main
 public struct AdventOfCode {
     public static func main() {
-        let day: any Day = DayFour()
+        let day: any Day = AoC2022.DayFour()
         
         do {
             print("Part One: \(try day.partOne())")

@@ -7,36 +7,44 @@
 
 import Foundation
 
-public final class DayThree: Day {
-    var puzzleInput: PuzzleInput = .init()
-    
-    public func partOne(_ puzzleInput: PuzzleInput) throws -> Int {
-        try puzzleInput.value
-            .split(separator: "\n")
-            .map() { line in
-                let halfCount = line.count / 2
-                let firstHalf = Set(line.dropLast(halfCount))
-                let secondHalf = Set(line.dropFirst(halfCount))
-
-                let char = firstHalf.intersection(secondHalf).first!
-                return char.priority
-            }
-            .reduce(0 , +)
-    }
-    
-    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
-        try puzzleInput.value
-            .split(separator: "\n")
-            .chunked(into: 3)
-            .compactMap { group in
-                group
-                    .map(Set.init)
-                    .reduce(Set<Character>()) { $0.count == 0 ? $1 : $0.intersection($1) }
-            }
-            .map { ac in
-                ac.first!.priority
-            }
-            .reduce(0, +)
+extension AoC2022 {
+    public final class DayThree: Day {
+        // MARK: - Day
+        
+        let puzzleInput: PuzzleInput
+        
+        init(_ puzzleInput: PuzzleInput) {
+            self.puzzleInput = puzzleInput
+        }
+        
+        public func partOne() throws -> Int {
+            try puzzleInput.value
+                .split(separator: "\n")
+                .map() { line in
+                    let halfCount = line.count / 2
+                    let firstHalf = Set(line.dropLast(halfCount))
+                    let secondHalf = Set(line.dropFirst(halfCount))
+                    
+                    let char = firstHalf.intersection(secondHalf).first!
+                    return char.priority
+                }
+                .reduce(0 , +)
+        }
+        
+        public func partTwo() throws -> Int {
+            try puzzleInput.value
+                .split(separator: "\n")
+                .chunked(into: 3)
+                .compactMap { group in
+                    group
+                        .map(Set.init)
+                        .reduce(Set<Character>()) { $0.count == 0 ? $1 : $0.intersection($1) }
+                }
+                .map { ac in
+                    ac.first!.priority
+                }
+                .reduce(0, +)
+        }
     }
 }
 

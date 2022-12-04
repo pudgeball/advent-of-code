@@ -7,60 +7,66 @@
 
 import Foundation
 
-public final class DayFour: Day {
-    // MARK: - Structures
-    
-    private struct SectionAssignment {
-        private let firstElf: ClosedRange<Int>
-        private let secondElf: ClosedRange<Int>
+extension AoC2022 {
+    public final class DayFour: Day {
+        // MARK: - Structures
         
-        init?(_ base: ArraySlice<Character>) {
-            let parts = base.split(separator: ",")
-            let firstPart = String(parts[0])
-            let secondPart = String(parts[1])
+        private struct SectionAssignment {
+            private let firstElf: ClosedRange<Int>
+            private let secondElf: ClosedRange<Int>
             
-            let createRange = { (b: String) -> ClosedRange<Int>? in
-                let parts = b.split(separator: "-")
-                guard let n1 = Int(parts[0]), let n2 = Int(parts[1]) else {
+            init?(_ base: ArraySlice<Character>) {
+                let parts = base.split(separator: ",")
+                let firstPart = String(parts[0])
+                let secondPart = String(parts[1])
+                
+                let createRange = { (b: String) -> ClosedRange<Int>? in
+                    let parts = b.split(separator: "-")
+                    guard let n1 = Int(parts[0]), let n2 = Int(parts[1]) else {
+                        return nil
+                    }
+                    return ClosedRange.init(uncheckedBounds: (n1, n2))
+                }
+                
+                guard let firstElf = createRange(firstPart), let secondElf = createRange(secondPart) else {
                     return nil
                 }
-                return ClosedRange.init(uncheckedBounds: (n1, n2))
+                self.firstElf = firstElf
+                self.secondElf = secondElf
             }
             
-            guard let firstElf = createRange(firstPart), let secondElf = createRange(secondPart) else {
-                return nil
+            var workOverlaps: Bool {
+                firstElf.overlaps(secondElf) || secondElf.overlaps(firstElf)
             }
-            self.firstElf = firstElf
-            self.secondElf = secondElf
+            
+            var workIsDuplicated: Bool {
+                firstElf ~= secondElf || secondElf ~= firstElf
+            }
         }
         
-        var workOverlaps: Bool {
-            firstElf.overlaps(secondElf) || secondElf.overlaps(firstElf)
+        // MARK: - Day
+        
+        let puzzleInput: PuzzleInput
+        
+        init(_ puzzleInput: PuzzleInput = .init()) {
+            self.puzzleInput = puzzleInput
         }
         
-        var workIsDuplicated: Bool {
-            firstElf ~= secondElf || secondElf ~= firstElf
+        public func partOne() throws -> Int {
+            try puzzleInput.value
+                .split(separator: "\n")
+                .compactMap(SectionAssignment.init)
+                .filter(\.workIsDuplicated)
+                .count
         }
-    }
-    
-    // MARK: - Day
-    
-    var puzzleInput: PuzzleInput = .init()
-    
-    public func partOne(_ puzzleInput: PuzzleInput) throws -> Int {
-        try puzzleInput.value
-            .split(separator: "\n")
-            .compactMap(SectionAssignment.init)
-            .filter(\.workIsDuplicated)
-            .count
-    }
-    
-    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
-        try puzzleInput.value
-            .split(separator: "\n")
-            .compactMap(SectionAssignment.init)
-            .filter(\.workOverlaps)
-            .count
+        
+        public func partTwo() throws -> Int {
+            try puzzleInput.value
+                .split(separator: "\n")
+                .compactMap(SectionAssignment.init)
+                .filter(\.workOverlaps)
+                .count
+        }
     }
 }
 

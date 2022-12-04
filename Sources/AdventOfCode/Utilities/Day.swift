@@ -7,19 +7,11 @@
 
 protocol Day {
     associatedtype Value
+    
+    init(_ puzzleInput: PuzzleInput)
 
-    func partOne(_ input: PuzzleInput) throws -> Value
-    func partTwo(_ input: PuzzleInput) throws -> Value
+    func partOne() throws -> Value
+    func partTwo() throws -> Value
     
     var puzzleInput: PuzzleInput { get }
-}
-
-extension Day {
-    func partOne() throws -> Value {
-        try partOne(self.puzzleInput)
-    }
-    
-    func partTwo() throws -> Value {
-        try partTwo(self.puzzleInput)
-    }
 }

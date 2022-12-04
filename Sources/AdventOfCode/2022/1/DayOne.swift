@@ -7,33 +7,39 @@
 
 import Foundation
 
-public final class DayOne: Day {
-    var puzzleInput: PuzzleInput = .init()
-    
-    private enum DayOneError: Error {
-        case noElfFound
-    }
-    
-    private struct Elf {
-        fileprivate let calories: Int
+extension AoC2022 {
+    public final class DayOne: Day {
+        // MARK: - Structures
         
-        public init(calorieInput: [String]) {
-            self.calories = calorieInput.compactMap(Int.init).reduce(0, +)
+        private struct Elf {
+            fileprivate let calories: Int
+            
+            public init(calorieInput: [Substring.SubSequence]) {
+                self.calories = calorieInput.compactMap({ Int($0) }).reduce(0, +)
+            }
         }
-    }
-    
-    public func partOne(_ puzzleInput: PuzzleInput) throws -> Int {
-        try getElvesByCalories(puzzleInput).first?.calories ?? 0
-    }
-    
-    public func partTwo(_ puzzleInput: PuzzleInput) throws -> Int {
-        try getElvesByCalories(puzzleInput).prefix(3).map(\.calories).reduce(0, +)
-    }
-
-    private func getElvesByCalories(_ input: PuzzleInput) throws -> [Elf] {
-        try input.value
-            .split(separator: "\n\n")
-            .map() { Elf(calorieInput: $0.split(separator: "\n").map(String.init)) }
-            .sorted(by: { $0.calories > $1.calories })
+        
+        // MARK: - Day
+        
+        let puzzleInput: PuzzleInput
+        
+        init(_ puzzleInput: PuzzleInput = .init()) {
+            self.puzzleInput = puzzleInput
+        }
+        
+        public func partOne() throws -> Int {
+            try getElvesByCalories(puzzleInput).first?.calories ?? 0
+        }
+        
+        public func partTwo() throws -> Int {
+            try getElvesByCalories(puzzleInput).prefix(3).map(\.calories).reduce(0, +)
+        }
+        
+        private func getElvesByCalories(_ input: PuzzleInput) throws -> [Elf] {
+            try input.value
+                .split(separator: "\n\n")
+                .map() { Elf(calorieInput: $0.split(separator: "\n")) }
+                .sorted(by: { $0.calories > $1.calories })
+        }
     }
 }

@@ -10,7 +10,7 @@ import XCTest
 
 final class AoC2022Tests: XCTestCase {
     func testDayOne() throws {
-        let sampleInput = """
+        let day = AoC2022.DayOne(.init(source: """
         1000
         2000
         3000
@@ -25,49 +25,43 @@ final class AoC2022Tests: XCTestCase {
         9000
 
         10000
-        """.puzzleInput
-        XCTAssertEqual(try DayOne().partOne(sampleInput), 24_000)
+        """))
+        XCTAssertEqual(try day.partOne(), 24_000)
     }
     
     func testDayTwo() throws {
-        let sampleInput = """
+        let day = AoC2022.DayTwo(.init(source: """
         A Y
         B X
         C Z
-        """.puzzleInput
-        
-        let day = DayTwo()
-        XCTAssertEqual(try day.partOne(sampleInput), 15)
-        XCTAssertEqual(try day.partTwo(sampleInput), 12)
+        """))
+        XCTAssertEqual(try day.partOne(), 15)
+        XCTAssertEqual(try day.partTwo(), 12)
     }
     
     func testDayThree() throws {
-        let day = DayThree()
-        let sampleInput = """
+        let day = AoC2022.DayThree(.init(source: """
         vJrwpWtwJgWrhcsFMMfFFhFp
         jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
         PmmdzqPrVvPwwTWBwg
         wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
         ttgJtRGJQctTZtZT
         CrZsJsPPZsGzwwsLwLmpwMDw
-        """.puzzleInput
-        
-        XCTAssertEqual(try day.partOne(sampleInput), 157)
-        XCTAssertEqual(try day.partTwo(sampleInput), 70)
+        """))
+        XCTAssertEqual(try day.partOne(), 157)
+        XCTAssertEqual(try day.partTwo(), 70)
     }
     
     func testDayFour() throws {
-        let day = DayFour()
-        let sampleInput = """
+        let day = AoC2022.DayFour(.init(source: """
         2-4,6-8
         2-3,4-5
         5-7,7-9
         2-8,3-7
         6-6,4-6
         2-6,4-8
-        """.puzzleInput
-        
-        XCTAssertEqual(try day.partOne(sampleInput), 2)
-        XCTAssertEqual(try day.partTwo(sampleInput), 4)
+        """))
+        XCTAssertEqual(try day.partOne(), 2)
+        XCTAssertEqual(try day.partTwo(), 4)
     }
 }
