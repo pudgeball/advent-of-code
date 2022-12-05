@@ -15,3 +15,7 @@ protocol Day {
     
     var puzzleInput: PuzzleInput { get }
 }
+
+protocol Year {
+    static func day(_ date: Int) -> (any Day)?
+}

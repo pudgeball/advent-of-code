@@ -13,7 +13,7 @@ extension AoC2022 {
         
         let puzzleInput: PuzzleInput
         
-        init(_ puzzleInput: PuzzleInput) {
+        init(_ puzzleInput: PuzzleInput = .init()) {
             self.puzzleInput = puzzleInput
         }
         
