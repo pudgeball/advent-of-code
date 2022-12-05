@@ -64,4 +64,20 @@ final class AoC2022Tests: XCTestCase {
         XCTAssertEqual(try day.partOne(), 2)
         XCTAssertEqual(try day.partTwo(), 4)
     }
+    
+    func testDayFive() throws {
+        let day = AoC2022.DayFive(.init(source: """
+            [D]
+        [N] [C]
+        [Z] [M] [P]
+         1   2   3
+
+        move 1 from 2 to 1
+        move 3 from 1 to 3
+        move 2 from 2 to 1
+        move 1 from 1 to 2
+        """))
+        XCTAssertEqual(try day.partOne(), "CMZ")
+//        XCTAssertEqual(try day.partTwo(), 4)
+    }
 }

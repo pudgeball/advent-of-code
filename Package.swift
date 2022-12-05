@@ -9,11 +9,14 @@ let package = Package(
         .macOS(.v13),
     ],
     dependencies: [
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     ],
     targets: [
         .executableTarget(
             name: "AdventOfCode",
-            dependencies: []),
+            dependencies: [
+                .product(name: "Algorithms", package: "swift-algorithms"),
+            ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventOfCode"]),
