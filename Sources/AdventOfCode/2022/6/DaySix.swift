@@ -30,7 +30,7 @@ extension AoC2022 {
             
             mutating func append(_ element: T) {
                 if self.backing.count == size {
-                    self.backing = Array(self.backing.dropFirst())
+                    self.backing.removeFirst()
                 }
                 self.backing.append(element)
             }
