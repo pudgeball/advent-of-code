@@ -19,8 +19,8 @@ extension AoC2022 {
                 backing.count
             }
             
-            var isUnique: Bool {
-                Set(backing).count == backing.count
+            var isFullySaturatedUniquely: Bool {
+                backing.count == self.size && Set(backing).count == backing.count
             }
             
             init(size: Int) {
@@ -49,29 +49,20 @@ extension AoC2022 {
         }
         
         public func partOne() throws -> Int {
-            var characters = Stack<Character>(size: 4)
-            let input = try self.puzzleInput.value
-             
-            for (index, char) in input.enumerated() {
-                characters.append(char)
-                
-                
-                if characters.count == 4 && characters.isUnique {
-                    return index + 1
-                }
-            }
-            
-            return -1
+            try _solution(4)
         }
         
         public func partTwo() throws -> Int {
-            var characters = Stack<Character>(size: 14)
-            let input = try self.puzzleInput.value
-             
-            for (index, char) in input.enumerated() {
+            try _solution(14)
+        }
+        
+        func _solution(_ size: Int) throws -> Int {
+            var characters = Stack<Character>(size: size)
+
+            for (index, char) in try self.puzzleInput.value.enumerated() {
                 characters.append(char)
                 
-                if characters.count == 14 && characters.isUnique {
+                if characters.isFullySaturatedUniquely {
                     return index + 1
                 }
             }
