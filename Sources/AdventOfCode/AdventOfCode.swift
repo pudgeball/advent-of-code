@@ -18,7 +18,7 @@ public struct AdventOfCode {
 //            exit(-1)
 //        }
         
-        let day: any Day = AoC2022.DayFive()
+        let day: any Day = AoC2022.DaySix()
 //        (.init(source:
 //        """
 //            [D]

@@ -79,6 +79,19 @@ final class AoC2022Tests: XCTestCase {
         """))
         XCTAssertEqual(try day.partOne(), "CMZ")
         XCTAssertEqual(try day.partTwo(), "MCD")
-//        XCTAssertEqual(try day.partTwo(), 4)
+    }
+    
+    func testDaySix() throws {
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "mjqjpqmgbljsphdztnvjfqwrcgsmlb")).partOne(), 7)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "bvwbjplbgvbhsrlpgdmjqwftvncz")).partOne(), 5)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "nppdvjthqldpwncqszvftbrmjlhg")).partOne(), 6)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg")).partOne(), 10)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")).partOne(), 11)
+        
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "mjqjpqmgbljsphdztnvjfqwrcgsmlb")).partTwo(), 19)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "bvwbjplbgvbhsrlpgdmjqwftvncz")).partTwo(), 23)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "nppdvjthqldpwncqszvftbrmjlhg")).partTwo(), 23)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg")).partTwo(), 29)
+        XCTAssertEqual(try AoC2022.DaySix(.init(source: "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")).partTwo(), 26)
     }
 }
