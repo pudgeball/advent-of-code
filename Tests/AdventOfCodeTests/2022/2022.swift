@@ -78,6 +78,7 @@ final class AoC2022Tests: XCTestCase {
         move 1 from 1 to 2
         """))
         XCTAssertEqual(try day.partOne(), "CMZ")
+        XCTAssertEqual(try day.partTwo(), "MCD")
 //        XCTAssertEqual(try day.partTwo(), 4)
     }
 }

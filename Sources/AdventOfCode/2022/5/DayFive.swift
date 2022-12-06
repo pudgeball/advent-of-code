@@ -15,10 +15,10 @@ extension AoC2022 {
         internal struct CrateMap {
             private let stacks: [[Character]]
             
-            init(_ input: String) {
+            init(_ input: String, moveTogether: Bool) {
                 var stacks: [[Character]] = []
                 
-                let regex = try! NSRegularExpression(pattern: "move (\\d) from (\\d) to (\\d)")
+                let regex = try! NSRegularExpression(pattern: #"move (\d+) from (\d+) to (\d+)"#)
                 
                 let parts = input.split(separator: "\n\n")
                 let map = parts[0]
@@ -32,8 +32,8 @@ extension AoC2022 {
                     stacks.append([])
                 }
                 
-                print("====")
-                for line in map.split(separator: "\n").dropLast().reversed() {
+//                print("====")
+                for line in map.split(separator: "\n").dropLast() {
                     for (i, stack) in String(line).chunks(ofCount: 4).enumerated() {
                         let char = String(stack).dropFirst().first!
                         if !char.isWhitespace {
@@ -41,9 +41,12 @@ extension AoC2022 {
                         }
                     }
                 }
-                print("====")
+//                print("====")
                 
-                print("{\(stacks.enumerated().map { (i, s) in return "'\(i+1)': '\(String(s))'" }.joined(separator: ", "))}")
+//                print(stacks.map({ Array($0.reversed()) }))
+                
+//                print("{\(stacks.enumerated().map { (i, s) in return "'\(i+1)': '\(String(s))'" }.joined(separator: ", "))}")
+//                print("{\(stacks.enumerated().map { (i, s) in return "'\(i+1)': \(s.count)" }.joined(separator: ", "))}")
                 
                 let nsrange = NSRange(instructions.startIndex..<instructions.endIndex,
                                       in: instructions)
@@ -65,18 +68,26 @@ extension AoC2022 {
                     {
 //                        print("move \(moveCount) from \(initialStack) to \(finalStack)")
                         
+                        
+                        var moveStack: [Character] = []
                         for _ in 0..<moveCount {
-                            let c = stacks[initialStack - 1].last!
-                            stacks[initialStack - 1] = Array(stacks[initialStack - 1].dropLast())
-                            stacks[finalStack - 1].append(c)
+                            if moveTogether {
+                                moveStack.append(stacks[initialStack - 1].removeFirst())
+                            } else {
+                                let c = stacks[initialStack - 1].removeFirst()
+                                stacks[finalStack - 1].insert(c, at: 0)
+                            }
                         }
                         
-                        print("{\(stacks.enumerated().map { (i, s) in return "'\(i+1)': '\(String(s))'" }.joined(separator: ", "))}")
+                        for c in moveStack.reversed() {
+                            stacks[finalStack - 1].insert(c, at: 0)
+                        }
                     }
                 }
                 
-                print(stacks)
-                print(stacks.map({ String($0) }))
+//                print(stacks)
+//                print(stacks.map({ String($0) }))
+//                print(stacks.map(\.count))
                 
                 self.stacks = stacks
                 
@@ -85,7 +96,7 @@ extension AoC2022 {
             }
             
             func result() -> String {
-                stacks.compactMap(\.last).map(String.init).reduce("", +)
+                stacks.compactMap(\.first).map(String.init).reduce("", +)
             }
         }
         
@@ -99,11 +110,11 @@ extension AoC2022 {
         }
         
         public func partOne() throws -> String {
-            CrateMap(try puzzleInput.value).result()
+            CrateMap(try puzzleInput.value, moveTogether: false).result()
         }
         
         public func partTwo() throws -> String {
-            ""
+            CrateMap(try puzzleInput.value, moveTogether: true).result()
         }
     }
 }
