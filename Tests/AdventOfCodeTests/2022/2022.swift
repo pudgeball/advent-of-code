@@ -94,4 +94,35 @@ final class AoC2022Tests: XCTestCase {
         XCTAssertEqual(try AoC2022.DaySix(.init(source: "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg")).partTwo(), 29)
         XCTAssertEqual(try AoC2022.DaySix(.init(source: "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")).partTwo(), 26)
     }
+    
+    func testDaySeven() throws {
+        let day = AoC2022.DaySeven(.init(source: """
+        $ cd /
+        $ ls
+        dir a
+        14848514 b.txt
+        8504156 c.dat
+        dir d
+        $ cd a
+        $ ls
+        dir e
+        29116 f
+        2557 g
+        62596 h.lst
+        $ cd e
+        $ ls
+        584 i
+        $ cd ..
+        $ cd ..
+        $ cd d
+        $ ls
+        4060174 j
+        8033020 d.log
+        5626152 d.ext
+        7214296 k
+        """))
+        
+        XCTAssertEqual(try day.partOne(), 95437)
+        XCTAssertEqual(try day.partTwo(), 24933642)
+    }
 }
