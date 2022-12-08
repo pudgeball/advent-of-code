@@ -125,4 +125,17 @@ final class AoC2022Tests: XCTestCase {
         XCTAssertEqual(try day.partOne(), 95437)
         XCTAssertEqual(try day.partTwo(), 24933642)
     }
+    
+    func testDayEight() throws {
+        let day = AoC2022.DayEight(.init(source: """
+        30373
+        25512
+        65332
+        33549
+        35390
+        """))
+        
+        XCTAssertEqual(try day.partOne(), 21)
+        XCTAssertEqual(try day.partTwo(), 8)
+    }
 }
